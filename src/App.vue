@@ -14,15 +14,15 @@
     
     <div class='row'>
       <div class='col'>
-        <author-search ref='authorSearch'></author-search>
+        <author-search ref='authorSearch' :authorsList="authorsList" @selectAuthor="selectAuthor"></author-search>
 
-        <books-list ref='booksListView'></books-list>
+        <books-list ref='booksListView' :listArr="listArr"  @selectItem="selectItem" ></books-list>
         
-        <books-list-pagination ref='booksListPagination'></books-list-pagination>
+        <books-list-pagination ref='booksListPagination'  :isFirst="isFirst" :isLast="isLast"  @preFun="preFun"  @nextFun="nextFun"></books-list-pagination>
       </div>
 
       <div class='col'>
-        <book-view></book-view>
+        <book-view :bookDetail="bookDetail"></book-view>
       </div>
       
     </div>
@@ -60,27 +60,108 @@ export default {
       lightThemeUrl: 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css',
       darkThemeUrl: 'https://cdn.jsdelivr.net/npm/bootstrap-dark-5@1.1.3/dist/css/bootstrap-night.min.css',
       testing: false,
+      listArr:[],
+      isFirst:true,
+      isLast:false,
+      bookDetail:null
     };
   },
   computed: {
     booksList() {
-      return bookListArr.sort((item1, item2) => {
-        return item1.name.localeCompare(item2.name);
+      let bookArr =  bookListArr.sort((item1, item2) => {
+        return item1.title.localeCompare(item2.title);
       });
-      // return [] // TODO: implement me
+      //替换分号
+      bookArr.map((v)=>{
+        v.authors = v.authors.replace(';',', ')
+      })
+      debugger
+       return bookArr // TODO: implement me
+       
     },
-    authorsList() {
-      return [] // TODO: implement me
+    authorsList() {      
+      let authors = [] 
+      bookListArr.map((v)=>{
+          authors.push(v.authors)
+      })      
+      return [...new Set(authors)].sort() // TODO: implement me
     },
   },
   methods: {
     toggleTests() {
       this.testing = !this.testing;
+    },
+    changeStyle(url) {
+      let obj = document.getElementById("css");
+      obj.setAttribute("href",url);
+    },
+    selectAuthor(author){
+      let a = author.target.value
+      console.log(a)
+      debugger
+    },
+    /**书籍列表展示 */    
+    preFun(){  
+      debugger
+      if(this.page !== 0){
+        this.page--
+        this.getCurrentPageList()
+        this.setPageStatus()
+        //重置详情页
+        this.bookDetail = null
+      }
+      
+    },
+    nextFun(){     
+      let pageMax =  Math.ceil(this.booksList.length/5)
+      if(this.page < pageMax){
+        this.page++
+        this.getCurrentPageList()
+        this.setPageStatus()
+         //重置详情页
+        this.bookDetail = null
+      }
+      
+    },
+    selectItem(index){      
+      this.selectedIndex = index
+      let tempObj = this.listArr[index]
+      let newObj = {}
+      Object.keys(tempObj).sort().forEach((v)=> newObj[v]=tempObj[v]);      
+      this.bookDetail = newObj
+    },
+    getCurrentPageList(){      
+      let start = this.page* this.windowSize;
+      let end = (this.page + 1) * this.windowSize;
+      this.listArr = this.booksList.slice(start, end);
+    },
+    setPageStatus(){
+      let pageMax =  Math.ceil(this.booksList.length/5)
+      if(pageMax>1){
+        if(this.page===0){
+          this.isFirst = true
+          this.isLast = false
+        }else if(this.page===pageMax){
+          this.isFirst = false
+          this.isLast = true
+        }else{
+          this.isFirst = false
+          this.isLast = false
+        }
+      }else{
+        this.isFirst = true
+        this.isLast = true
+      }
+    },
+    init(){      
+      this.getCurrentPageList()
+      this.setPageStatus()
     }
+    
   },
-  mounted(){
-    debugger
-    this.booksList
+  mounted(){   
+    this.init()
+
   }
 
 }
