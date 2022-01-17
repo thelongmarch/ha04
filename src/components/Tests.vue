@@ -216,7 +216,7 @@ export default {
           label: 'Dark Mode: Button Label "Lights on" (1 Punkt)', 
           cmd: async () => {
             this.$root.$refs.navBar.toggleDarkMode();
-            await this.$root.$nextTick();
+            await this.$root.$nextTick();        
             return document.getElementById('btn-dark-mode').innerText.trim();
           }, 
           expected: '"Lights on"' 
@@ -244,6 +244,7 @@ export default {
     for (let i=0; i < this.tests.length; i++) {
       let result = null;
       try {
+        debugger
         result = JSON.stringify(await this.tests[i].cmd());
       } catch (err) {
         result = JSON.stringify(err);

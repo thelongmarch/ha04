@@ -1,7 +1,7 @@
 <template>
   <!-- TODO: implement me -->
   <div class="detail-main" v-if="bookDetail">
-    <div >
+    <div id="book">
        <div class="detail-img">
           <img :src="bookDetail.thumbnail" alt="" class="img-main" id="book-image">
         </div>
@@ -11,7 +11,7 @@
         <div class="book-property" v-for="(value,key,index) in bookDetail" :key="index">
           <div v-if="!['title','thumbnail','subtitle'].includes(key)" class="com-one">
             <span class="com-key">{{key}}: </span>
-            <span class="com-value">{{value}}</span>
+            <span class="com-value book-property" >{{value}}</span>
           </div>
          
         </div>

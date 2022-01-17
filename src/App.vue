@@ -7,7 +7,9 @@
         <nav-bar
           ref='navBar'
           :tests-open='testing'
-          @toggle-tests='toggleTests'>
+          @toggle-tests='toggleTests'
+          @changeMode='changeMode'
+          >
         </nav-bar>
       </div>
     </div>
@@ -69,11 +71,12 @@ export default {
   computed: {
     booksList() {
       let bookArr =  bookListArr.sort((item1, item2) => {
+                
         return item1.title.localeCompare(item2.title);
       });
       //替换分号
       bookArr.map((v)=>{
-        v.authors = v.authors.replace(';',', ')
+        v.authors = v.authors.replace(/;/g,', ')
       })
       debugger
        return bookArr // TODO: implement me
@@ -81,9 +84,14 @@ export default {
     },
     authorsList() {      
       let authors = [] 
-      bookListArr.map((v)=>{
-          authors.push(v.authors)
-      })      
+      debugger
+      bookListArr.map((v)=>{ 
+          if(v.authors.includes(';')){ 
+            authors = authors.concat(v.authors.split(';'))
+          }else{
+            if(v.authors) authors.push(v.authors)            
+          }
+      })
       return [...new Set(authors)].sort() // TODO: implement me
     },
   },
@@ -91,8 +99,12 @@ export default {
     toggleTests() {
       this.testing = !this.testing;
     },
+    changeMode(status){
+      let url = status?this.darkThemeUrl :this.lightThemeUrl
+      this.changeStyle(url)
+    },
     changeStyle(url) {
-      let obj = document.getElementById("css");
+      let obj = document.getElementById("bootstrap-theme");
       obj.setAttribute("href",url);
     },
     selectAuthor(author){

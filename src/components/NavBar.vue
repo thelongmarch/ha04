@@ -9,13 +9,15 @@
 
       <div>
         <!-- TODO: implement -->
-        <img src='@/assets/ButtonDarkMode.jpg' width ='114' class='rounded float-end' alt='' id="btn-dark-mode">
-        <button id="btn-dark-mode" @click="toggleDarkMode">{{isDark?"Lights off" :"Lights on"}}</button>
+        <!-- <img src='@/assets/ButtonDarkMode.jpg' width ='114' class='rounded float-end' alt='' id="btn-dark-mode"> -->
+       
 
         <button class='btn btn-primary me-3' type='submit' @click='toggleTests' >
           <i class='bi bi-robot'></i>
           {{ (!testsOpen) ? "Run tests" : "Close tests" }}
         </button>
+
+         <button id="btn-dark-mode" @click="toggleDarkMode">{{isDark?"Lights on" :"Lights off"}}</button>
       </div>
 
     </div>

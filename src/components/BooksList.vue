@@ -1,9 +1,9 @@
 <template>
   <!-- TODO: implement me -->
   
-  <div class="main" id="container-element">
+  <div class="main" id="books">
     <!-- <img src='@/assets/BooksList.jpg' class='img-fluid rounded' alt=''> -->
-    <div v-for="(item,index) in listArr" :key="index" @click="selectItem(index)" class="list-one">
+    <div v-for="(item,index) in listArr" :key="index" @click="selectItem(index)" class="list-one  book" >
       <span class="book-title">{{item.title}}</span>
       <span class="book-authors">{{item.authors}}</span>
     </div>

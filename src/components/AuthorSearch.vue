@@ -2,7 +2,10 @@
   <!-- TODO: implement me -->
   <div class="search-main">
     <span class="search-title">Search books of author:</span>
-    <input type="text" @input="testSearch" class="search-input" placeholder="Stephen King, Stephen Hawking,Steve Turner, ...">
+    <input type="text" @input="testSearch" class="search-input" placeholder="Stephen King, Stephen Hawking,Steve Turner, ...">    
+    <ul >
+      <li v-for="(item ,index) in filterData" :key="index" @click="selectLi(item)">{{item}}</li>
+    </ul>
   </div>
   <!-- <img src='@/assets/AuthorSearch.jpg' class='img-fluid rounded' alt=''> -->
 </template>
@@ -16,8 +19,22 @@ export default {
       default: null
     } 
   },
+  data() {
+    return {    
+       filterData:[]
+    };
+  },
   methods: {
     testSearch(author) {
+      let tempArr = []
+      debugger
+      this.authorsList.map((v)=>{
+        if(v.author.includes(author)){
+          tempArr.push(v)
+        }
+      })
+
+      this.filterData = tempArr
       this.$emit('select-author', author);
     }
   }

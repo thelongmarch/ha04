@@ -2,8 +2,8 @@
   <!-- TODO: implement me -->
   <!-- <img src='@/assets/BooksListPagination.jpg' class='img-fluid rounded' alt=''> -->
   <div class="bottom-main">
-    <button class="com-btn btn-left" :class="isFirst?'allow':null" @click="preFun" :disabled="isFirst">Previous</button>
-    <button class="com-btn btn-right" :class="isLast?'allow':null" @click="nextFun" :disabled="isLast">Next</button>
+    <button class="com-btn btn-left disabled" id="pagination-back-button" :class="isFirst?'allow':null" @click="preFun" :disabled="isFirst">Previous</button>
+    <button class="com-btn btn-right disabled" id="pagination-next-button" :class="isLast?'allow':null" @click="nextFun" :disabled="isLast">Next</button>
   </div>
 
 </template>
